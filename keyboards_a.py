@@ -10,7 +10,7 @@ main_buttons: ReplyKeyboardMarkup = ReplyKeyboardMarkup(keyboard=[[button_enter,
 button_1: KeyboardButton = KeyboardButton(text='Сегодня')
 button_2: KeyboardButton = KeyboardButton(text='Вчера')
 button_3: KeyboardButton = KeyboardButton(text='Неделя')
-button_4: KeyboardButton = KeyboardButton(text='Месяц')
+button_4: KeyboardButton = KeyboardButton(text='Другое')
 
 period: ReplyKeyboardMarkup = ReplyKeyboardMarkup(keyboard=[[button_1, button_2, button_3, button_4]],
                                                   one_time_keyboard=True, resize_keyboard=True)

@@ -25,18 +25,16 @@ def write_users_table(name: str, telega_id: int):
         SQL = 'SELECT user_name FROM users_a WHERE tg_id = %s;'
         cursor.execute(SQL, (telega_id,))
         if cursor.fetchone() == None:
-            # SQL = ('''SELECT user_name FROM users WHERE tg_id = %s;''')
             SQL = 'INSERT INTO users_a (user_name,tg_id) VALUES (%s,%s);'
             value = (name, telega_id)
             cursor.execute(SQL, value)
 
 
-def write_data_table(price: int, coment: str, category: int, tg_id: int):
+def write_data_table(price: float, coment: str, category: int, tg_id: int):
     with join_base().cursor() as cursor:
         today = datetime.date.today()
         rows = (price, coment, category, tg_id, today)
         SQL = 'INSERT INTO notes (price,coment,fk_posts_categories,fk_tg_id,recording_date) VALUES (%s,%s,%s,%s,%s);'
-        # проверка на пользователя и запись ид в табличку
         cursor.execute(SQL, rows)
 
         # with connection.cursor() as cursor:

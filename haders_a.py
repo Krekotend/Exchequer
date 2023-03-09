@@ -5,19 +5,12 @@ from aiogram.filters import CommandStart, Text, Command
 from aiogram.types import Message
 from keyboards_a import main_buttons, period
 from posgSQL import write_users_table, write_data_table, show_categories_table, shows_history_day, shows_last_item
-
+from service import test_in_dig,record_notes
 router: Router = Router()
 
 
 def main_filter(message: Message) -> bool:
-    if len(message.text.split(";")) == 3:
-        mas = message.text.split(";")  # перенести в блок с функциями-обработчиками (создать)
-        mas_2 = mas[2]
-        if len(mas[2]) == 0:
-            mas_2 = 11
-        main_info = (int(mas[0]), mas[1], mas_2)
-        write_data_table(*main_info, message.from_user.id)
-        return True
+    return test_in_dig(message.text)
 
 
 def date_filter(message: Message) -> bool:
@@ -27,6 +20,7 @@ def date_filter(message: Message) -> bool:
 
 @router.message(main_filter)
 async def process_start_command(message: Message):
+    record_notes(message.text,message.from_user.id)
     await message.answer(text='Понял-принял,запомнил-записал!')
 
 
@@ -103,7 +97,7 @@ async def process_history_answer(message: Message):
 async def shows_today(message: Message):
     day = datetime.date.today()
     text = ''.join([i + '\n' for i in shows_history_day(day, message.from_user.id)])
-    total_day = f'Итого за день {sum([int(i.split()[0]) for i in shows_history_day(day, message.from_user.id)])}'
+    total_day = f'Итого за день {sum([float(i.split()[0]) for i in shows_history_day(day, message.from_user.id)])}'
     await message.answer(text=f'{text}\n{total_day}', reply_markup=main_buttons)
 
 
@@ -111,7 +105,7 @@ async def shows_today(message: Message):
 async def shows_today(message: Message):
     yesterday = datetime.datetime.today() - datetime.timedelta(days=1)
     text = ''.join([i + '\n' for i in shows_history_day(yesterday.date(), message.from_user.id)])
-    total_day = f'Итого за день {sum([int(i.split()[0]) for i in shows_history_day(yesterday.date(), message.from_user.id)])}'
+    total_day = f'Итого за день {sum([float(i.split()[0]) for i in shows_history_day(yesterday.date(), message.from_user.id)])}'
     await message.answer(text=f'{text}\n{total_day}', reply_markup=main_buttons)
 
 
