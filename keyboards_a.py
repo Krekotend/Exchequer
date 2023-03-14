@@ -4,8 +4,7 @@ button_enter: KeyboardButton = KeyboardButton(text='Записать')
 button_history: KeyboardButton = KeyboardButton(text='История')
 
 main_buttons: ReplyKeyboardMarkup = ReplyKeyboardMarkup(keyboard=[[button_enter, button_history]],
-                                                        resize_keyboard=True,
-                                                        input_field_placeholder='сумма ; коментарий ; категоря')
+                                                        resize_keyboard=True)
 
 button_1: KeyboardButton = KeyboardButton(text='Сегодня')
 button_2: KeyboardButton = KeyboardButton(text='Вчера')
