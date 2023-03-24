@@ -1,28 +1,12 @@
-from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.utils.keyboard import InlineKeyboardBuilder
-# button_1: KeyboardButton = KeyboardButton(text='Сегодня')
-# button_2: KeyboardButton = KeyboardButton(text='Вчера')
-# button_3: KeyboardButton = KeyboardButton(text='Месяц')
-# button_4: KeyboardButton = KeyboardButton(text='Другое')
-#
-# period: ReplyKeyboardMarkup = ReplyKeyboardMarkup(keyboard=[[button_1, button_2, button_3, button_4]],
-#                                                    resize_keyboard=True,one_time_keyboard=True)
-#
-# period: ReplyKeyboardMarkup = ReplyKeyboardMarkup(keyboard=[[button_1, button_2, button_3, button_4]],
-#                                                    resize_keyboard=True,one_time_keyboard=True)
-#
-# aiogram_calendar
-# Функция для генерации инлайн-клавиатур "на лету"
+
 def create_inline_kb(width: int,
                      *args: str,
                      **kwargs: str) -> InlineKeyboardMarkup:
-    # Инициализируем билдер
     kb_builder: InlineKeyboardBuilder = InlineKeyboardBuilder()
-    # Инициализируем список для кнопок
     buttons: list[InlineKeyboardButton] = []
 
-    # Заполняем список кнопками из аргументов args и kwargs
     if args:
         for button in args:
             buttons.append(InlineKeyboardButton(
@@ -34,10 +18,8 @@ def create_inline_kb(width: int,
                 text=text,
                 callback_data=button))
 
-    # Распаковываем список с кнопками в билдер методом row c параметром width
     kb_builder.row(*buttons, width=width)
 
-    # Возвращаем объект инлайн-клавиатуры
     return kb_builder.as_markup()
 
 
