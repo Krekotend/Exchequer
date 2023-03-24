@@ -60,14 +60,14 @@ def shows_history_day(day : str,tg_id: int):
             item_day.append(f'{item[0]} - {item[1]}')
         return item_day
 
-# def shows_history_months(day : str,tg_id: int):
-#     with join_base().cursor() as cursor:
-#         item_day = []
-#         SQL_h = 'SELECT price,coment FROM notes WHERE recording_date = %s and fk_tg_id = %s;'
-#         cursor.execute(SQL_h, (day,tg_id))
-#         for item in cursor.fetchall():
-#             item_day.append(f'{item[0]} - {item[1]}')
-#         return item_day
+def shows_history_months(mounth: int,tg_id: int):
+    with join_base().cursor() as cursor:
+        item_day = []
+        SQL_h = 'SELECT price,coment FROM notes WHERE EXTRACT(MONTH FROM recording_date) = %s and fk_tg_id = %s;'
+        cursor.execute(SQL_h, (mounth,tg_id))
+        for item in cursor.fetchall():
+            item_day.append(f'{item[0]} - {item[1]}')
+        return item_day
 
 
 def shows_last_item(tg_id):
