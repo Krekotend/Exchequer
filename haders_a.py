@@ -70,7 +70,7 @@ async def process_history_answer(message: Message):
                          reply_markup=period)
 
 
-@router.message(Command(commands=['Categories']))
+@router.message(Command(commands=['categories']))
 async def show_categories(message: Message):
     text = ''.join([i + '\n' for i in show_categories_table()])
     await message.answer(text=text)
