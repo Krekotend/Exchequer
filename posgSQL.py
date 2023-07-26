@@ -5,7 +5,7 @@ from config_a import load_config
 
 def join_base():
     try:
-        connection = psycopg2.connect(host=load_config().db.host, user=load_config().db.user,
+        connection = psycopg2.connect(host=load_config().db.host, user='krekotend',
                                       password=load_config().db.password, database=load_config().db.db_name)
         connection.autocommit = True
 
@@ -39,8 +39,8 @@ def show_categories_table():
         SQL = 'SELECT * FROM categories;'
         cursor.execute(SQL)
         for item in cursor.fetchall():
-            caegories.append(f'{item[0]} - {item[1]}')
-        return caegories
+            caegories.append([int(item[0]),item[1]])
+        return sorted(caegories)
 
 
 def shows_history_day(day: str, tg_id: int):
