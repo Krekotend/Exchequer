@@ -17,7 +17,7 @@ def record_notes(text: str, tg_id):
     item_coment = ''
     item_cat = 11
     if text.split(' ')[-1].isdigit():
-        if 2 <= int(text.split(' ')[-1]) <= 11:
+        if 1 <= int(text.split(' ')[-1]) <= 11:
             item_cat = int(text.split(' ')[-1])
             item_coment = text.replace(item_price, '', 1)[:-2]
     else:

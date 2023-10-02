@@ -58,7 +58,7 @@ async def show_help(message: Message):
                               'пример\ _*200 бар у дяди Васи 4*_\n'
                               'Посмотреть категории можно в меню или напишите мне \/categories\n'
                               'eсли категория не выбрана он проставит ее автоматом на \'другое\' \n'
-                              'В меню можно просмотреть _*Историю записей*_ или напишите мне\/history\n'
+                              'В меню можно просмотреть _*Историю записей*_ или напишите мне \/history\n'
                               '_есть вопросы пишите_ \@krekotend',
                          parse_mode='MarkdownV2')
 
@@ -96,6 +96,7 @@ async def shows_today(callback: CallbackQuery):
     total_day = f'Итого за день {sum([float(i.split()[0]) for i in shows_history_day(day, callback.from_user.id)])}'
     # if callback.message.text != 'Сегодня':
     await callback.message.edit_text(text=f'{text}\n{total_day}')
+
 
 @router.callback_query(Text(text=['Вчера']))
 async def shows_yesterday(callback: CallbackQuery):
