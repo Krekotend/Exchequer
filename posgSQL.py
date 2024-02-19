@@ -53,11 +53,12 @@ def shows_history_day(day: str, tg_id: int):
         return item_day
 
 
-def shows_history_months(mounth: int, tg_id: int):
+def shows_history_months(mounth: int, tg_id: int, this_year = datetime.datetime.today().year):
     with join_base().cursor() as cursor:
         item_day = []
-        SQL_h = 'SELECT price,coment FROM notes WHERE EXTRACT(MONTH FROM recording_date) = %s and fk_tg_id = %s;'
-        cursor.execute(SQL_h, (mounth, tg_id))
+        SQL_h = ('SELECT price,coment FROM notes WHERE EXTRACT(MONTH FROM recording_date) = %s '
+                 'AND EXTRACT(YEAR FROM recording_date) = %s and fk_tg_id = %s;')
+        cursor.execute(SQL_h, (mounth,this_year, tg_id))
         for item in cursor.fetchall():
             item_day.append(f'{item[0]} - {item[1]}')
         return item_day
