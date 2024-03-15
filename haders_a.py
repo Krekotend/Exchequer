@@ -122,7 +122,7 @@ async def shows_month(callback: CallbackQuery):
 
 @router.message(Command(commands=['cody']))
 async def process_history(message: Message):
-    cody = coun_date
+    cody = coun_date()
     await message.answer(text=f'{cody}')
 
 @router.message()
