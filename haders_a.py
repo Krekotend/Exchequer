@@ -5,7 +5,7 @@ from aiogram.filters import CommandStart, Text, Command
 from aiogram.types import Message, CallbackQuery
 from keyboards_a import period, mounths
 from posgSQL import write_users_table, show_categories_table, shows_history_day, shows_last_item, shows_history_months
-from service import test_in_dig, record_notes, coun_date
+from service import test_in_dig, record_notes
 
 router: Router = Router()
 
@@ -20,7 +20,7 @@ def date_filter(message: Message) -> bool:
 
 
 @router.message(main_filter)
-async def process_successful_answer(message: Message):
+async def process_start_command(message: Message):
     record_notes(message.text, message.from_user.id)
     await message.answer(text='Понял-принял,запомнил-записал!')
 
@@ -38,10 +38,10 @@ async def process_start_command(message: Message):
 
 
 @router.message(date_filter)
-async def shows_manual_today(message: Message):
+async def process_text_endswith_bot(message: Message):
     text = ''.join([str_day + '\n' for str_day in shows_history_day(message.text, message.from_user.id)])
     total_day = f'Итого за день ' \
-                f'{sum([float(i.split()[0]) for i in shows_history_day(message.text, message.from_user.id)])}'
+                f'{sum([int(i.split()[0]) for i in shows_history_day(message.text, message.from_user.id)])}'
     await message.answer(text=f'{text}\n{total_day}')
 
 
@@ -120,11 +120,6 @@ async def shows_mounth(callback: CallbackQuery):
                 f'{sum([float(i.split()[0]) for i in shows_history_months(month, callback.from_user.id)])}'
     await callback.message.edit_text(text=f'{text}\n{total_day}')
 
-
-@router.message(Command(commands=['codat']))
-async def process_coun_dat(message: Message):
-    items = str(coun_date)
-    await message.answer(text=items)
 
 @router.message()
 async def other(message: Message):
