@@ -5,7 +5,7 @@ from aiogram.filters import CommandStart, Text, Command
 from aiogram.types import Message, CallbackQuery
 from keyboards_a import period, mounths
 from posgSQL import write_users_table, show_categories_table, shows_history_day, shows_last_item, shows_history_months
-from service import test_in_dig, record_notes
+from service import test_in_dig, record_notes, coun_date
 
 router: Router = Router()
 
@@ -20,7 +20,7 @@ def date_filter(message: Message) -> bool:
 
 
 @router.message(main_filter)
-async def process_start_command(message: Message):
+async def ending_answer(message: Message):
     record_notes(message.text, message.from_user.id)
     await message.answer(text='Понял-принял,запомнил-записал!')
 
@@ -38,7 +38,7 @@ async def process_start_command(message: Message):
 
 
 @router.message(date_filter)
-async def process_text_endswith_bot(message: Message):
+async def show_select_day(message: Message):
     text = ''.join([str_day + '\n' for str_day in shows_history_day(message.text, message.from_user.id)])
     total_day = f'Итого за день ' \
                 f'{sum([int(i.split()[0]) for i in shows_history_day(message.text, message.from_user.id)])}'
@@ -46,7 +46,7 @@ async def process_text_endswith_bot(message: Message):
 
 
 @router.message(Command(commands=['last']))
-async def process_text_endswith_bot(message: Message):
+async def show_last_day(message: Message):
     items = ''.join([f'{i[0]} - {i[1]}' + '\n' for i in shows_last_item(message.from_user.id)[::-1]])
     await message.answer(text=items)
 
@@ -64,7 +64,7 @@ async def show_help(message: Message):
 
 
 @router.message(Command(commands=['history']))
-async def process_history_answer(message: Message):
+async def process_history(message: Message):
     telega_id = (message.from_user.id,)
     await message.answer(text='Выберети период 👇',
                          reply_markup=period)
@@ -108,18 +108,22 @@ async def shows_yesterday(callback: CallbackQuery):
 
 
 @router.callback_query(Text(text=['Месяц']))
-async def shows_mounth(callback: CallbackQuery):
+async def process_select_month(callback: CallbackQuery):
     await callback.message.edit_text(text=f'Выберети месяц', reply_markup=mounths)
 
 
 @router.callback_query(Text(text=['1', '3', '2', '4', '5', '6', '7', '8', '9', '10', '11', '12']))
-async def shows_mounth(callback: CallbackQuery):
+async def shows_month(callback: CallbackQuery):
     month = int(callback.data)
     text = ''.join([i + '\n' for i in shows_history_months(month, callback.from_user.id)])
     total_day = f'Итого за месяц ' \
                 f'{sum([float(i.split()[0]) for i in shows_history_months(month, callback.from_user.id)])}'
     await callback.message.edit_text(text=f'{text}\n{total_day}')
 
+@router.message(Command(commands=['cody']))
+async def process_history(message: Message):
+    cody = coun_date
+    await message.answer(text=f'{cody}')
 
 @router.message()
 async def other(message: Message):
