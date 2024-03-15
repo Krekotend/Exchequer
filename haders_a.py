@@ -5,7 +5,7 @@ from aiogram.filters import CommandStart, Text, Command
 from aiogram.types import Message, CallbackQuery
 from keyboards_a import period, mounths
 from posgSQL import write_users_table, show_categories_table, shows_history_day, shows_last_item, shows_history_months
-from service import test_in_dig, record_notes
+from service import test_in_dig, record_notes, coun_date
 
 router: Router = Router()
 
@@ -120,6 +120,11 @@ async def shows_mounth(callback: CallbackQuery):
                 f'{sum([float(i.split()[0]) for i in shows_history_months(month, callback.from_user.id)])}'
     await callback.message.edit_text(text=f'{text}\n{total_day}')
 
+
+@router.message(Command(commands=['codat']))
+async def process_coun_dat(message: Message):
+    items = str(coun_date)
+    await message.answer(text=items)
 
 @router.message()
 async def other(message: Message):

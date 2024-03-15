@@ -1,4 +1,5 @@
 from posgSQL import write_data_table
+from datetime import datetime as dt
 
 def test_in_dig(txt_msg: str):
     val = txt_msg.split(' ')[0]
@@ -24,3 +25,7 @@ def record_notes(text: str, tg_id):
         item_coment = text.replace(item_price, '', 1)
     main_info = (item_price, item_coment, item_cat)
     write_data_table(*main_info, tg_id)
+
+def coun_date():
+    cur_dt = dt.now()
+    return int(cur_dt.timestamp() // 86400)
